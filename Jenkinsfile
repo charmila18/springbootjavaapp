@@ -8,17 +8,6 @@ pipeline {
                 git branch: 'main' ,url: 'https://github.com/charmila18/springbootjavaapp.git'
             }
         }
-        stage ('Validate with Maven')
-        {
-            steps{
-                sh 'mvn validate'
-            }
-        }
-        stage('Compile with Maven')
-        {
-            steps{
-                sh 'mvn compile'
-            }
-        }
+       
     }
 }
