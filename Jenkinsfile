@@ -62,6 +62,19 @@ pipeline {
                   }
                
             }
+        stage('Push to ACR') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'acr-creds',
+                                                  usernameVariable: 'ACR_USER',
+                                                  passwordVariable: 'ACR_PASS')]) {
+                    sh '''
+                        echo "$ACR_PASS" | docker login $ACR_SERVER -u "$ACR_USER" --password-stdin
+                        docker push $ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG
+                        docker logout $ACR_SERVER
+                    '''
+                }
+            }
+        }
         }
        
     }
