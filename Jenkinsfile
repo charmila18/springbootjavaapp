@@ -1,8 +1,5 @@
 pipeline {
-    agent any
-    tools {
-        maven 'maven'
-    }
+    agent anygit 
 
     stages {
         stage('Checkout from Git')
