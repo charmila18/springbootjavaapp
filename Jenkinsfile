@@ -23,6 +23,13 @@ pipeline {
                 sh 'mvn compile'
             }
         }
+        stage('Test with Maven')
+        {
+            steps{
+                sh 'mvn test'
+            }
+        }
+
        
     }
 }
