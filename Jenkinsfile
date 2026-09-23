@@ -58,12 +58,11 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                 sh '''
-                docker build -t $ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG .
+                 sh 'docker build -t $ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG .'
                   }
                
             }
         }
        
     }
-}
+
