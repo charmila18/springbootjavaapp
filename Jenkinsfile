@@ -3,6 +3,12 @@ pipeline {
     tools {
         maven 'maven'
     }
+    environment {
+        ACR_SERVER       = 'democontainerregistry12.azurecr.io'
+        IMAGE_NAME       = 'springbootdemo'
+        IMAGE_TAG        = 'latest'
+       
+    }
 
     stages {
         stage('Checkout from Git')
@@ -48,6 +54,14 @@ pipeline {
         {
             steps{
                 sh 'mvn package'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                 sh '''
+                docker build -t $ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG .
+                  }
+               
             }
         }
        
