@@ -75,6 +75,17 @@ pipeline {
                 }
             }
         }
+         stage('Deploy to AKS') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh '''
+                        kubectl apply -n $K8S_NAMESPACE -f k8s/deployment.yaml
+                        kubectl apply -n $K8S_NAMESPACE -f k8s/service.yaml
+                    '''
+                }
+            }
+        }
+
         }
        
     }
