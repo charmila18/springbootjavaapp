@@ -120,7 +120,7 @@ pipeline {
         success {
             script {
                 echo "Deployment verified successfully. Sending success email via Brevo API."
-                withCredentials([string(credentialsId: 'brevo-api-key', variable: 'BREVO_API_KEY')]) {
+                withCredentials([string(credentialsId: 'BREVO_API_KEY', variable: 'BREVO_API_KEY')]) {
                     sh """
                         HTTP_CODE=\$(curl -s -o /tmp/brevo.out -w '%{http_code}' \\
                           -X POST https://api.brevo.com/v3/smtp/email \\
@@ -143,7 +143,7 @@ pipeline {
         failure {
             script {
                 echo "Pipeline or deployment verification failed. Sending failure email via Brevo API."
-                withCredentials([string(credentialsId: 'brevo-api-key', variable: 'BREVO_API_KEY')]) {
+                withCredentials([string(credentialsId: 'BREVO_API_KEY', variable: 'BREVO_API_KEY')]) {
                     sh """
                         HTTP_CODE=\$(curl -s -o /tmp/brevo.out -w '%{http_code}' \\
                           -X POST https://api.brevo.com/v3/smtp/email \\
