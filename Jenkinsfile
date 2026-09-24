@@ -62,6 +62,16 @@ pipeline {
                   }
                
             }
+        stage('Trivy Image Scan') {
+            steps {
+                sh '''
+                    trivy image --severity HIGH,CRITICAL --format table \
+                        -o trivy-image-report.txt \
+                        $ACR_SERVER/$IMAGE_NAME:$IMAGE_TAG
+                '''
+                // archiveArtifacts artifacts: 'trivy-image-report.txt', allowEmptyArchive: true
+            }
+        }
         stage('Push to ACR') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'acr-creds',
@@ -75,16 +85,16 @@ pipeline {
                 }
             }
         }
-         stage('Deploy to AKS') {
-            steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh '''
-                        kubectl apply -f k8s/deployment.yaml
-                        kubectl apply -f k8s/service.yaml
-                    '''
-                }
-            }
-        }
+        // stage('Deploy to AKS') {
+        //     steps {
+        //         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+        //             sh '''
+        //                 kubectl apply -f k8s/deployment.yaml
+        //                 kubectl apply -f k8s/service.yaml
+        //             '''
+        //         }
+        //     }
+        // }
 
         }
        
